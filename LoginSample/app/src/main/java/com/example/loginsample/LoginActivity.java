@@ -21,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
+    private AccountEntity accountEntity;
+    private String accountEntityString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,12 @@ public class LoginActivity extends AppCompatActivity {
                 if(edtUsername.getText().toString().equals("admin") && edtPassword.getText().toString().equals("admin")){
                     Toast.makeText(getApplicationContext(), "Bienvenido a mi APP", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Bienvenido a mi APP");
+
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.putExtra("ACCOUNT", accountEntityString);
+
+                    startActivity(intent);
+
                 }else{
                     Toast.makeText(getApplicationContext(), "Error en la autenticación", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Error en la autenticación");
@@ -78,11 +86,12 @@ public class LoginActivity extends AppCompatActivity {
                     Integer resultCode = activityResult.getResultCode();
                     if (resultCode==AccountActivity.ACCOUNT_ACEPTAR){
                         Intent data = activityResult.getData();
-                        String account_record = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
-
+                        //String account_record = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
+                        accountEntityString = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
                         //Se recuperan los datos del gson
                         Gson gson = new Gson();
-                        AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
+                        // AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
+                        accountEntity = gson.fromJson(accountEntityString, AccountEntity.class);
 
                         //Imprimiendo
                         String firstname = accountEntity.getFirstname();
