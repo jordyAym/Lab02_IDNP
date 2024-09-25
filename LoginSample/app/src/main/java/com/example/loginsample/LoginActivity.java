@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
             //Ejecución del activity
             //startActivity(intent);
+
+            //Llamando al activityResultLauncher
+            activityResultLauncher.launch(intent);
         });
 
     }
@@ -83,10 +86,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         //Imprimiendo
                         String firstname = accountEntity.getFirstname();
-                        Toast.makeText(getApplicationContext(), "Nombre:"+firstname, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Nombre:"+firstname, Toast.LENGTH_LONG).show();
+
+                        Log.d("LoginActivity", "Nombre: "+firstname);
                     }
                     else if(resultCode == AccountActivity.ACCOUNT_CANCELAR){
-                        Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_LONG).show();
+                        Log.d("LoginActivity", "Cancelado");
                     }
                 }
             }
