@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginsample.databinding.ActivityMainBinding;
@@ -54,8 +58,22 @@ public class LoginActivity extends AppCompatActivity {
             //Creación del intent para la comunicacion con AccountActivity
             Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
             //Ejecución del activity
-            startActivity(intent);
+            //startActivity(intent);
         });
 
     }
+
+    ActivityResultLauncher<Intent> activityResultLauncher=registerForActivityResult(
+            //Para abrir un segundo activity y recuperar los datos
+            new ActivityResultContracts.StartActivityForResult(),
+            //Callback
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                //Aquí se recupera el valor
+                public void onActivityResult(ActivityResult activityResult) {
+                    Integer resultCode = activityResult.getResultCode();
+                    Intent data =activityResult.getData();
+                }
+            }
+    );
 }
