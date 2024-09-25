@@ -1,5 +1,6 @@
 package com.example.loginsample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
+
 public class AccountActivity extends AppCompatActivity {
+
+    public final static String ACCOUNT_RECORD="";
+
+    public final static Integer ACCOUNT_ACEPTAR=100;
+    public final static Integer ACCOUNT_CANCELAR=200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,16 @@ public class AccountActivity extends AppCompatActivity {
                 accountEntity.setPhone(edtPhone.getText().toString());
                 accountEntity.setUsername(edtUsername2.getText().toString());
                 accountEntity.setPassword(edtPassword2.getText().toString());
-            } 
+
+                Gson gson = new Gson();
+                String accountJson = gson.toJson(accountEntity);
+
+                Intent data = new Intent();
+                data.putExtra(ACCOUNT_RECORD, accountJson);
+
+                setResult(ACCOUNT_ACEPTAR, data);
+                finish();
+            }
         });
     }
 }
