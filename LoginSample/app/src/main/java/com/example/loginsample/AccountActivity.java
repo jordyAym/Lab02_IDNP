@@ -1,5 +1,6 @@
 package com.example.loginsample;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.gson.Gson;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -57,6 +61,9 @@ public class AccountActivity extends AppCompatActivity {
                 accountEntity.setUsername(edtUsername2.getText().toString());
                 accountEntity.setPassword(edtPassword2.getText().toString());
 
+                // Guardar la cuenta en el archivo cuentas.txt
+                saveAccount(accountEntity);
+
                 Gson gson = new Gson();
                 String accountJson = gson.toJson(accountEntity);
 
@@ -75,5 +82,21 @@ public class AccountActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    //Método para guardar una cuenta con todos sus datos
+    private void saveAccount(AccountEntity accountEntity) {
+        //Convertir la cuenta a una cadena JSON
+        Gson gson = new Gson();
+        String accountJson = gson.toJson(accountEntity) + "\n";
+
+        try {
+            //Abrir el archivo cuentas.txt en modo de añadir (append)
+            FileOutputStream fos = openFileOutput("cuentas.txt", Context.MODE_APPEND);
+            fos.write(accountJson.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

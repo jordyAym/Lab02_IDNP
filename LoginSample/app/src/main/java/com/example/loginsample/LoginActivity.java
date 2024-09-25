@@ -1,5 +1,6 @@
 package com.example.loginsample;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +18,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.loginsample.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
     private AccountEntity accountEntity;
     private String accountEntityString;
+    private List<AccountEntity> accounts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(edtUsername.getText().toString().equals("admin") && edtPassword.getText().toString().equals("admin")){
                     Toast.makeText(getApplicationContext(), "Bienvenido a mi APP", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Bienvenido a mi APP");
@@ -73,6 +84,35 @@ public class LoginActivity extends AppCompatActivity {
             activityResultLauncher.launch(intent);
         });
 
+    }
+
+    //Método para verificar las credenciales desde cuentas.txt
+    private boolean validateCredentials(String username, String password) {
+        try {
+            // Abrir archivo cuentas.txt
+            InputStream inputStream = openFileInput("cuentas.txt");
+
+            if (inputStream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                Gson gson = new Gson();
+
+                // Leer archivo línea por línea
+                while ((line = reader.readLine()) != null) {
+                    // Convertir cada línea a un objeto AccountEntity
+                    AccountEntity account = gson.fromJson(line, AccountEntity.class);
+
+                    // Verificar credenciales
+                    if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
+                        return true; // Login correcto
+                    }
+                }
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false; // Credenciales no encontradas
     }
 
     ActivityResultLauncher<Intent> activityResultLauncher=registerForActivityResult(
