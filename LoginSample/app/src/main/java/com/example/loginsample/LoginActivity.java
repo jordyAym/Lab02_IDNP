@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginsample.databinding.ActivityMainBinding;
+import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,7 +73,21 @@ public class LoginActivity extends AppCompatActivity {
                 //Aquí se recupera el valor
                 public void onActivityResult(ActivityResult activityResult) {
                     Integer resultCode = activityResult.getResultCode();
-                    Intent data =activityResult.getData();
+                    if (resultCode==AccountActivity.ACCOUNT_ACEPTAR){
+                        Intent data = activityResult.getData();
+                        String account_record = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
+
+                        //Se recuperan los datos del gson
+                        Gson gson = new Gson();
+                        AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
+
+                        //Imprimiendo
+                        String firstname = accountEntity.getFirstname();
+                        Toast.makeText(getApplicationContext(), "Nombre:"+firstname, Toast.LENGTH_SHORT).show();
+                    }
+                    else if(resultCode == AccountActivity.ACCOUNT_CANCELAR){
+                        Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
     );
