@@ -67,5 +67,13 @@ public class AccountActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(ACCOUNT_CANCELAR);
+                finish();
+            }
+        });
     }
 }
