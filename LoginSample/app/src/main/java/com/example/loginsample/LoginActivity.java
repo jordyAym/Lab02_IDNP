@@ -27,6 +27,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public final static String LOGIN_SEND="";
     private ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
     private AccountEntity accountEntity;
@@ -81,7 +82,14 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "Bienvenido a mi APP");
 
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    String firstname = accountEntity.getFirstname();
+
                     //intent.putExtra("ACCOUNT", accountEntity);
+
+
+                    Gson gson = new Gson();
+                    String accountJson = gson.toJson(accountEntity);
+                    intent.putExtra(LOGIN_SEND, accountJson);
 
                     startActivity(intent);
                 } else {
