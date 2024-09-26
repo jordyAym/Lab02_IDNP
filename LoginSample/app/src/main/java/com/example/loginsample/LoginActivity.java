@@ -113,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
     //Método para verificar las credenciales desde cuentas.txt
     private boolean validateCredentials(String username, String password) {
         try {
-            // Abrir archivo cuentas.txt desde la carpeta assets
-            InputStream inputStream = getAssets().open("cuentas.txt");
+            // Abrir archivo cuentas.txt desde el almacenamiento interno
+            InputStream inputStream = openFileInput("cuentas.txt");
 
             if (inputStream != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -140,6 +140,20 @@ public class LoginActivity extends AppCompatActivity {
         return false; // Credenciales no encontradas
     }
 
+    // Método para guardar la cuenta en el archivo cuentas.txt
+    private void saveAccountToFile(String accountJson) {
+        try {
+            // Abrir el archivo cuentas.txt en modo append (si no existe, lo crea)
+            FileOutputStream fos = openFileOutput("cuentas.txt", Context.MODE_APPEND);
+            fos.write((accountJson + "\n").getBytes());  // Escribir la cuenta en una nueva línea
+            fos.close();
+            Log.d("LoginActivity", "Cuenta guardada en cuentas.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("LoginActivity", "Error al guardar la cuenta", e);
+        }
+    }
+
     ActivityResultLauncher<Intent> activityResultLauncher=registerForActivityResult(
             //Para abrir un segundo activity y recuperar los datos
             new ActivityResultContracts.StartActivityForResult(),
@@ -157,6 +171,9 @@ public class LoginActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         // AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
                         accountEntity = gson.fromJson(accountEntityString, AccountEntity.class);
+
+                        // Guardar la cuenta en cuentas.txt
+                        saveAccountToFile(accountEntityString);
 
                         //Imprimiendo
                         String firstname = accountEntity.getFirstname();

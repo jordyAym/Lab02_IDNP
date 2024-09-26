@@ -61,9 +61,6 @@ public class AccountActivity extends AppCompatActivity {
                 accountEntity.setUsername(edtUsername2.getText().toString());
                 accountEntity.setPassword(edtPassword2.getText().toString());
 
-                // Guardar la cuenta en el archivo cuentas.txt
-                saveAccount(accountEntity);
-
                 Gson gson = new Gson();
                 String accountJson = gson.toJson(accountEntity);
 
