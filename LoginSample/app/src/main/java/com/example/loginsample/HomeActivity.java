@@ -3,6 +3,7 @@ package com.example.loginsample;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,9 @@ public class HomeActivity extends AppCompatActivity {
 
             // Ahora tienes el objeto AccountEntity deserializado
             Log.d("HomeActivity", "Recibido: " + accountEntity.getFirstname());
+            TextView edtTextBienvenida = findViewById(R.id.edtTextBienvenida);
+            String username = accountEntity.getUsername();
+            edtTextBienvenida.setText("Bienvenido " + username);
         } else {
             Log.d("HomeActivity", "No se recibió ningún objeto de cuenta");
         }
