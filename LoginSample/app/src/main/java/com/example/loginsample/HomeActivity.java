@@ -36,8 +36,10 @@ public class HomeActivity extends AppCompatActivity {
             // Ahora tienes el objeto AccountEntity deserializado
             Log.d("HomeActivity", "Recibido: " + accountEntity.getFirstname());
             TextView edtTextBienvenida = findViewById(R.id.edtTextBienvenida);
-            String username = accountEntity.getUsername();
-            edtTextBienvenida.setText("Bienvenido " + username);
+            String firstname = accountEntity.getFirstname();
+            String lastname = accountEntity.getLastname();
+
+            edtTextBienvenida.setText("Bienvenido " + firstname + " " + lastname);
         } else {
             Log.d("HomeActivity", "No se recibió ningún objeto de cuenta");
         }
