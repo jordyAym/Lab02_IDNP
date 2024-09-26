@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        String accountEntity = getIntent().getStringExtra("ACCOUNT");
-        Log.d("HomeActivity", accountEntity);
+        /*String accountEntity = getIntent().getStringExtra("ACCOUNT");
+        Log.d("HomeActivity", accountEntity);*/
     }
 }

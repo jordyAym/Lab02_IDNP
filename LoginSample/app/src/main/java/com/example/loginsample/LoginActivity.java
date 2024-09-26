@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private AccountEntity accountEntity;
     private String accountEntityString;
-    private List<AccountEntity> accounts;
 
 
     @Override
@@ -59,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(edtUsername.getText().toString().equals("admin") && edtPassword.getText().toString().equals("admin")){
+                /*if(edtUsername.getText().toString().equals("admin") && edtPassword.getText().toString().equals("admin")){
                     Toast.makeText(getApplicationContext(), "Bienvenido a mi APP", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Bienvenido a mi APP");
 
@@ -71,6 +70,23 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(), "Error en la autenticación", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Error en la autenticación");
+                }*/
+
+                String username = edtUsername.getText().toString();
+                String password = edtPassword.getText().toString();
+                Log.d("LOINGIN", "B"+ validateCredentials(username, password));
+                if (validateCredentials(username, password)) {
+                    // Credenciales correctas: mostrar mensaje y abrir HomeActivity
+                    Toast.makeText(getApplicationContext(), "Bienvenido " + username, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Bienvenido a mi APP");
+
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    //intent.putExtra("ACCOUNT", accountEntity);
+
+                    startActivity(intent);
+                } else {
+                    // Credenciales incorrectas
+                    Toast.makeText(getApplicationContext(), "Cuenta no encontrada", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -89,8 +105,8 @@ public class LoginActivity extends AppCompatActivity {
     //Método para verificar las credenciales desde cuentas.txt
     private boolean validateCredentials(String username, String password) {
         try {
-            // Abrir archivo cuentas.txt
-            InputStream inputStream = openFileInput("cuentas.txt");
+            // Abrir archivo cuentas.txt desde la carpeta assets
+            InputStream inputStream = getAssets().open("cuentas.txt");
 
             if (inputStream != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -104,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Verificar credenciales
                     if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
+                        accountEntity = account;
                         return true; // Login correcto
                     }
                 }
